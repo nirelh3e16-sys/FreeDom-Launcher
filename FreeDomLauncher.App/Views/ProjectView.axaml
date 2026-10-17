@@ -1,0 +1,72 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.ProjectView">
+  <ScrollViewer>
+    <StackPanel Margin="28,14,28,28" Spacing="14">
+      <Button Classes="ghost" Content="← Назад к списку" Command="{Binding BackCommand}" HorizontalAlignment="Left"/>
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Height="4"/>
+      <TextBlock Text="{Binding Error}" Classes="error" IsVisible="{Binding Error, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <Grid ColumnDefinitions="96,*" ColumnSpacing="16">
+            <Border Width="96" Height="96" CornerRadius="16" ClipToBounds="True" Background="{DynamicResource FdSurface2}">
+              <Image Source="{Binding Icon}" Stretch="UniformToFill"/>
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Title}" FontSize="26" FontWeight="Bold" TextWrapping="Wrap"/>
+              <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+              <TextBlock Text="{Binding Authors}" Classes="muted"/>
+              <TextBlock Text="{Binding DownloadsText}" FontWeight="SemiBold"/>
+            </StackPanel>
+          </Grid>
+          <WrapPanel>
+            <Button Classes="primary" Content="⬇ Установить лучшую версию" Command="{Binding InstallBestCommand}" IsVisible="{Binding CanInstall}" IsEnabled="{Binding !IsInstalling}" Margin="0,0,8,0"/>
+            <Button Classes="ghost" Content="Открыть на Modrinth ↗" Command="{Binding OpenWebCommand}"/>
+          </WrapPanel>
+          <TextBlock Text="{Binding TargetText}" Classes="muted" FontSize="12" IsVisible="{Binding CanInstall}"/>
+          <TextBlock Text="{Binding Note}" Classes="warn" IsVisible="{Binding Note, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+          <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsInstalling}" Height="6"/>
+          <TextBlock Text="{Binding InstallStatus}" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="6">
+          <TextBlock Classes="h2" Text="Информация"/>
+          <TextBlock Text="{Binding DatesText}" Classes="muted"/>
+          <TextBlock Text="{Binding CategoriesText, StringFormat='Категории: {0}'}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding LoadersText, StringFormat='Загрузчики: {0}'}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding GameVersionsText, StringFormat='Версии Minecraft: {0}'}" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card" IsVisible="{Binding BodyText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+        <StackPanel Spacing="8">
+          <TextBlock Classes="h2" Text="Описание"/>
+          <TextBlock Text="{Binding BodyText}" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="h2" Text="Версии проекта"/>
+      <ItemsControl ItemsSource="{Binding Versions}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="8"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card" Padding="12">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <StackPanel Spacing="3">
+                  <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                  <TextBlock Text="{Binding Meta}" Classes="muted" FontSize="12" TextWrapping="Wrap"/>
+                  <TextBlock Text="{Binding Files}" FontSize="12" TextWrapping="Wrap"/>
+                  <TextBlock Text="{Binding CompatText}" Foreground="#22C55E" FontSize="12"/>
+                </StackPanel>
+                <Button Grid.Column="1" Classes="ghost" Content="Установить" Command="{Binding InstallCommand}" VerticalAlignment="Center"/>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,109 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.SettingsView" Classes="page">
+  <ScrollViewer>
+    <StackPanel Margin="28" Spacing="16" MaxWidth="900" HorizontalAlignment="Left">
+      <TextBlock Classes="h1" Text="Настройки"/>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="Внешний вид"/>
+          <TextBlock Classes="muted" FontSize="12" Text="Тема"/>
+          <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding Theme}" Width="220"/>
+          <TextBlock Classes="muted" FontSize="12" Text="Основной цвет (#RRGGBB)"/>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBox Text="{Binding Accent}" Width="140"/>
+            <ItemsControl ItemsSource="{Binding AccentPresets}">
+              <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal" Spacing="6"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Button Width="30" Height="30" Padding="0" CornerRadius="15" Background="{Binding}"
+                          Command="{Binding $parent[UserControl].DataContext.ApplyPresetCommand}" CommandParameter="{Binding}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+          <CheckBox Content="Плавные анимации" IsChecked="{Binding Animations}"/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="Игра"/>
+          <TextBlock Classes="muted" FontSize="12" Text="Папка хранения сборок (пусто — по умолчанию; влияет на новые сборки)"/>
+          <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+            <TextBox Text="{Binding InstancesRoot}"/>
+            <Button Grid.Column="1" Classes="ghost" Content="Обзор…" Command="{Binding BrowseInstancesCommand}"/>
+            <Button Grid.Column="2" Classes="ghost" Content="По умолчанию" Command="{Binding ClearInstancesCommand}"/>
+          </Grid>
+          <TextBlock Classes="muted" FontSize="12" Text="Java по умолчанию (пусто — лаунчер скачает нужную Java сам)"/>
+          <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+            <TextBox Text="{Binding JavaPath}"/>
+            <Button Grid.Column="1" Classes="ghost" Content="Обзор…" Command="{Binding BrowseJavaCommand}"/>
+            <Button Grid.Column="2" Classes="ghost" Content="Найти" Command="{Binding DetectJavaCommand}"/>
+            <Button Grid.Column="3" Classes="ghost" Content="Авто" Command="{Binding ClearJavaCommand}"/>
+          </Grid>
+          <TextBlock Classes="muted" FontSize="12" Text="Оперативная память для новых сборок"/>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <Slider Minimum="1024" Maximum="{Binding MaxMemoryMb}" Value="{Binding Memory}" TickFrequency="512" IsSnapToTickEnabled="True" Width="320"/>
+            <TextBlock Text="{Binding MemoryText}" VerticalAlignment="Center"/>
+          </StackPanel>
+          <CheckBox Content="Показывать снапшоты при создании сборки" IsChecked="{Binding Snapshots}"/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="Загрузки"/>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="Параллельных скачиваний:" VerticalAlignment="Center"/>
+            <NumericUpDown Minimum="1" Maximum="10" Value="{Binding Parallel}" Width="130"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="Тайм-аут простоя (сек):" VerticalAlignment="Center"/>
+            <NumericUpDown Minimum="10" Maximum="600" Value="{Binding Timeout}" Width="130"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="Журналы"/>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock Text="Уровень:" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding LogLevels}" SelectedItem="{Binding LogLevel}" Width="130"/>
+            <TextBlock Text="Хранить дней:" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <NumericUpDown Minimum="1" Maximum="365" Value="{Binding LogDays}" Width="130"/>
+          </StackPanel>
+          <TextBlock Classes="muted" FontSize="12" Text="Токены и пароли в журналы не записываются."/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="Вход Microsoft"/>
+          <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap"
+                     Text="Application (client) ID вашего приложения Azure (публичный клиент, личные аккаунты Microsoft). Инструкция — в README, раздел «Авторизация»."/>
+          <TextBox Text="{Binding ClientId}" Watermark="00000000-0000-0000-0000-000000000000"/>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="О программе"/>
+          <TextBlock Text="{Binding VersionText}" FontWeight="SemiBold"/>
+          <TextBlock Text="{Binding DataPath}" Classes="muted" FontSize="12" TextWrapping="Wrap"/>
+          <WrapPanel>
+            <Button Classes="ghost" Content="📁 Папка данных" Command="{Binding OpenDataCommand}" Margin="0,0,8,0"/>
+            <Button Classes="ghost" Content="📄 Папка логов" Command="{Binding OpenLogsCommand}"/>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <Button Classes="primary" Content="Сохранить настройки" Command="{Binding SaveCommand}" Padding="22,10"/>
+        <TextBlock Text="{Binding Status}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

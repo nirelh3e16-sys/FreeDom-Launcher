@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FreeDomLauncher.App.ViewModels"
+        x:Class="FreeDomLauncher.App.Views.MainWindow"
+        Title="FreeDom Launcher" Width="1200" Height="760" MinWidth="960" MinHeight="620"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource FdBg}" Classes="anim">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <!-- Верхняя панель -->
+    <Border Grid.Row="0" Background="{DynamicResource FdSurface}" BorderBrush="{DynamicResource FdBorder}"
+            BorderThickness="0,0,0,1" Padding="16,8">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <Image Source="{Binding Logo}" Height="44" RenderOptions.BitmapInterpolationMode="None"/>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+          <Border Classes="card" Padding="12,6" CornerRadius="10">
+            <StackPanel>
+              <TextBlock Classes="muted" FontSize="11" Text="ТЕКУЩАЯ СБОРКА"/>
+              <TextBlock Text="{Binding ProfileText}" FontWeight="SemiBold"/>
+            </StackPanel>
+          </Border>
+          <Border Classes="card" Padding="12,6" CornerRadius="10">
+            <StackPanel>
+              <TextBlock Classes="muted" FontSize="11" Text="АККАУНТ"/>
+              <TextBlock Text="{Binding AccountText}" FontWeight="SemiBold"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="230,*">
+      <!-- Боковая навигация -->
+      <Border Background="{DynamicResource FdSurface}" BorderBrush="{DynamicResource FdBorder}" BorderThickness="0,0,1,0" Padding="12">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Bottom" Classes="muted" FontSize="12" Text="{Binding VersionText}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+          <ItemsControl ItemsSource="{Binding NavItems}">
+            <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="6"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Button Classes="nav" Classes.active="{Binding IsActive}" Command="{Binding SelectCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="12">
+                    <Border Width="34" Height="34" CornerRadius="9" Background="{DynamicResource FdGradient}">
+                      <Image Source="{Binding Icon}" Width="22" Height="22" RenderOptions.BitmapInterpolationMode="None"/>
+                    </Border>
+                    <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                  </StackPanel>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </DockPanel>
+      </Border>
+
+      <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
+    </Grid>
+
+    <!-- Статус -->
+    <Border Grid.Row="2" Background="{DynamicResource FdSurface}" BorderBrush="{DynamicResource FdBorder}"
+            BorderThickness="0,1,0,0" Padding="16,6">
+      <Grid ColumnDefinitions="*,200">
+        <TextBlock Text="{Binding Status.Status}" Classes="muted" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+        <ProgressBar Grid.Column="1" IsIndeterminate="True" IsVisible="{Binding Status.IsBusy}" Height="4" VerticalAlignment="Center"/>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

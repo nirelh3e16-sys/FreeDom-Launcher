@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="using:FreeDomLauncher.App.Views"
+             x:Class="FreeDomLauncher.App.Views.ModsHostView" Classes="page">
+  <Grid RowDefinitions="Auto,*">
+    <StackPanel Orientation="Horizontal" Spacing="8" Margin="28,22,28,0">
+      <TextBlock Classes="h1" Text="Моды и проекты" VerticalAlignment="Center" Margin="0,0,16,0"/>
+      <Button Classes="chip" Classes.active="{Binding CatalogActive}" Content="🔎 Каталог Modrinth" Command="{Binding ShowCatalogTabCommand}"/>
+      <Button Classes="chip" Classes.active="{Binding InstalledActive}" Content="{Binding InstalledTabText}" Command="{Binding ShowInstalledTabCommand}"/>
+    </StackPanel>
+    <Grid Grid.Row="1">
+      <Panel IsVisible="{Binding ShowCatalog}"><v:CatalogView DataContext="{Binding Catalog}"/></Panel>
+      <Panel IsVisible="{Binding ShowInstalled}"><v:InstalledModsView DataContext="{Binding Installed}"/></Panel>
+      <Panel IsVisible="{Binding ShowProject}"><v:ProjectView DataContext="{Binding Project}"/></Panel>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.AccountsView" Classes="page">
+  <ScrollViewer>
+    <StackPanel Margin="28" Spacing="16">
+      <TextBlock Classes="h1" Text="Аккаунты"/>
+
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <TextBlock Classes="h2" Text="Добавить аккаунт"/>
+          <TextBlock TextWrapping="Wrap" Classes="muted"
+                     Text="Вход выполняется через официальный сайт Microsoft: лаунчер показывает код, вы подтверждаете вход в браузере. Пароль в лаунчер не вводится, токены хранятся зашифрованными (Windows DPAPI)."/>
+          <WrapPanel>
+            <Button Classes="primary" Content="Войти через Microsoft" Command="{Binding AddMicrosoftCommand}" IsEnabled="{Binding !IsSigningIn}" Margin="0,0,8,0"/>
+            <Button Classes="ghost" Content="Отмена" Command="{Binding CancelSignInCommand}" IsVisible="{Binding IsSigningIn}"/>
+            <Button Classes="ghost" Content="Ely.by — скоро" IsEnabled="False"/>
+          </WrapPanel>
+          <TextBlock Classes="warn" IsVisible="{Binding !HasClientId}"
+                     Text="Не указан Client ID приложения Azure. Добавьте его в «Настройки → Вход Microsoft» (см. README)."/>
+
+          <Border Classes="card" Background="{DynamicResource FdSurface2}" IsVisible="{Binding HasCode}">
+            <StackPanel Spacing="8">
+              <TextBlock Text="Ваш код входа:" Classes="muted"/>
+              <TextBlock Text="{Binding UserCode}" FontSize="34" FontWeight="Bold" LetterSpacing="4"/>
+              <TextBlock Text="{Binding VerificationUri}" Classes="muted"/>
+              <WrapPanel>
+                <Button Classes="ghost" Content="Копировать код" Command="{Binding CopyCodeCommand}" Margin="0,0,8,0"/>
+                <Button Classes="ghost" Content="Открыть страницу входа" Command="{Binding OpenVerificationCommand}"/>
+              </WrapPanel>
+            </StackPanel>
+          </Border>
+          <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsSigningIn}" Height="4"/>
+          <TextBlock Text="{Binding StatusText}" TextWrapping="Wrap"/>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="muted" Text="Аккаунтов пока нет." IsVisible="{Binding IsEmpty}"/>
+
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="10"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <StackPanel Spacing="3">
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="{Binding Username}" FontSize="18" FontWeight="Bold"/>
+                    <Border IsVisible="{Binding IsActive}" Background="{DynamicResource FdGradient}" CornerRadius="8" Padding="8,2" VerticalAlignment="Center">
+                      <TextBlock Text="АКТИВЕН" FontSize="11" FontWeight="Bold" Foreground="White"/>
+                    </Border>
+                  </StackPanel>
+                  <TextBlock Text="{Binding Provider}" Classes="muted"/>
+                  <TextBlock Text="{Binding Uuid}" Classes="muted" FontSize="12"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="primary" Content="Сделать активным" Command="{Binding SelectCommand}" IsVisible="{Binding !IsActive}"/>
+                  <Button Classes="danger" Content="Удалить" Command="{Binding RemoveCommand}"/>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

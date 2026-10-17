@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.InstalledModsView">
+  <ScrollViewer>
+    <StackPanel Margin="28,14,28,28" Spacing="12">
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Text="{Binding HeaderText}" Classes="h2" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding SummaryText}" Classes="muted"/>
+          <WrapPanel>
+            <Button Classes="ghost" Content="⟳ Обновить список" Command="{Binding RefreshCommand}" Margin="0,0,8,0"/>
+            <Button Classes="ghost" Content="Проверить обновления" Command="{Binding CheckUpdatesCommand}" Margin="0,0,8,0"/>
+            <Button Classes="primary" Content="Обновить все" Command="{Binding UpdateAllCommand}" Margin="0,0,8,0"/>
+            <Button Classes="ghost" Content="📁 Папка mods" Command="{Binding OpenFolderCommand}" Margin="0,0,8,0"/>
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Height="4"/>
+
+      <Border Classes="card" Padding="30" IsVisible="{Binding IsEmpty}">
+        <StackPanel Spacing="10" HorizontalAlignment="Center">
+          <TextBlock Text="В этой сборке пока нет модов" Classes="h2" HorizontalAlignment="Center"/>
+          <Button Classes="primary" Content="Открыть каталог" Command="{Binding GoCatalogCommand}" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="8"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card" Padding="12">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <StackPanel Spacing="3">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding VersionText}" Classes="muted" VerticalAlignment="Bottom"/>
+                  </StackPanel>
+                  <TextBlock Classes="muted" FontSize="12">
+                    <Run Text="{Binding KindText}"/><Run Text=" · "/><Run Text="{Binding SourceText}"/><Run Text=" · "/><Run Text="{Binding StatusText}"/>
+                  </TextBlock>
+                  <TextBlock Text="{Binding FileName}" Classes="muted" FontSize="11"/>
+                  <TextBlock Text="{Binding Warning}" Classes="warn" FontSize="12" IsVisible="{Binding HasWarning}"/>
+                </StackPanel>
+                <WrapPanel Grid.Column="1" MaxWidth="360" VerticalAlignment="Center" HorizontalAlignment="Right">
+                  <Button Classes="primary" Content="{Binding UpdateText}" Command="{Binding UpdateModCommand}" IsVisible="{Binding HasUpdate}" Margin="0,0,6,6"/>
+                  <Button Classes="ghost" Content="{Binding ToggleText}" Command="{Binding ToggleCommand}" Margin="0,0,6,6"/>
+                  <Button Classes="ghost" Content="Страница" Command="{Binding OpenPageCommand}" IsVisible="{Binding CanOpenPage}" Margin="0,0,6,6"/>
+                  <Button Classes="danger" Content="Удалить" Command="{Binding DeleteCommand}" Margin="0,0,0,6"/>
+                </WrapPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

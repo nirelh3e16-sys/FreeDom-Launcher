@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.ProfilesView" Classes="page">
+  <ScrollViewer>
+    <StackPanel Margin="28" Spacing="16">
+      <TextBlock Classes="h1" Text="Сборки"/>
+
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <TextBlock Classes="h2" Text="Новая сборка"/>
+          <Grid ColumnDefinitions="2*,*,*" ColumnSpacing="10">
+            <TextBox Text="{Binding NewName}" Watermark="Название сборки"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding McVersions}" SelectedItem="{Binding SelectedMc}" HorizontalAlignment="Stretch" PlaceholderText="Версия Minecraft"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding LoaderOptions}" SelectedItem="{Binding SelectedLoader}" HorizontalAlignment="Stretch"/>
+          </Grid>
+          <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="14">
+            <CheckBox Content="Показывать снапшоты" IsChecked="{Binding ShowSnapshots}" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+              <TextBlock Text="ОЗУ:" Classes="muted" VerticalAlignment="Center"/>
+              <Slider Minimum="1024" Maximum="{Binding MaxMemoryMb}" Value="{Binding NewMemory}" TickFrequency="512" IsSnapToTickEnabled="True" Width="260"/>
+              <TextBlock Text="{Binding NewMemoryText}" VerticalAlignment="Center" Width="80"/>
+            </StackPanel>
+            <ProgressBar Grid.Column="2" IsIndeterminate="True" IsVisible="{Binding IsCreating}" Width="80" VerticalAlignment="Center"/>
+            <Button Grid.Column="3" Classes="primary" Content="Создать сборку" Command="{Binding CreateCommand}" IsEnabled="{Binding !IsCreating}"/>
+          </Grid>
+          <TextBlock Text="{Binding CreateStatus}" Classes="muted" TextWrapping="Wrap"/>
+          <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap"
+                     Text="Доступны Vanilla и Fabric. Forge, NeoForge и Quilt появятся в следующих версиях. Игровые файлы скачиваются при первом запуске."/>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="muted" Text="Сборок пока нет — создайте первую выше." IsVisible="{Binding IsEmpty}"/>
+
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="12"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card" Padding="0" ClipToBounds="True">
+              <Grid ColumnDefinitions="180,*">
+                <Image Source="{Binding Art}" Stretch="UniformToFill"/>
+                <StackPanel Grid.Column="1" Margin="16" Spacing="8">
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="{Binding Name}" FontSize="19" FontWeight="Bold"/>
+                    <Border IsVisible="{Binding IsActive}" Background="{DynamicResource FdGradient}" CornerRadius="8" Padding="8,2" VerticalAlignment="Center">
+                      <TextBlock Text="АКТИВНА" FontSize="11" FontWeight="Bold" Foreground="White"/>
+                    </Border>
+                  </StackPanel>
+                  <TextBlock Text="{Binding Info}"/>
+                  <TextBlock Text="{Binding Details}" Classes="muted" FontSize="12" TextWrapping="Wrap"/>
+                  <WrapPanel>
+                    <Button Classes="primary" Content="Выбрать" Command="{Binding SelectCommand}" IsVisible="{Binding !IsActive}" Margin="0,0,8,6"/>
+                    <Button Classes="ghost" Content="🧩 Моды" Command="{Binding ModsCommand}" Margin="0,0,8,6"/>
+                    <Button Classes="ghost" Content="✏ Изменить" Command="{Binding EditCommand}" Margin="0,0,8,6"/>
+                    <Button Classes="ghost" Content="📁 Папка" Command="{Binding OpenFolderCommand}" Margin="0,0,8,6"/>
+                    <Button Classes="ghost" Content="⧉ Дублировать" Command="{Binding DuplicateCommand}" Margin="0,0,8,6"/>
+                    <Button Classes="danger" Content="🗑 Удалить" Command="{Binding DeleteCommand}" Margin="0,0,8,6"/>
+                  </WrapPanel>
+
+                  <Border Classes="card" Background="{DynamicResource FdSurface2}" IsVisible="{Binding IsEditing}">
+                    <StackPanel Spacing="10">
+                      <TextBlock Text="Название" Classes="muted" FontSize="12"/>
+                      <TextBox Text="{Binding EditName}"/>
+                      <TextBlock Text="Оперативная память" Classes="muted" FontSize="12"/>
+                      <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Slider Minimum="1024" Maximum="32768" Value="{Binding EditMemory}" TickFrequency="512" IsSnapToTickEnabled="True" Width="320"/>
+                        <TextBlock Text="{Binding EditMemoryText}" VerticalAlignment="Center"/>
+                      </StackPanel>
+                      <TextBlock Text="Java (пусто — автоматически)" Classes="muted" FontSize="12"/>
+                      <TextBox Text="{Binding EditJava}" Watermark="C:\Program Files\...\bin\javaw.exe"/>
+                      <WrapPanel>
+                        <Button Classes="ghost" Content="Обзор…" Command="{Binding BrowseJavaCommand}" Margin="0,0,8,0"/>
+                        <Button Classes="ghost" Content="Найти Java" Command="{Binding DetectJavaCommand}" Margin="0,0,8,0"/>
+                        <Button Classes="ghost" Content="Авто" Command="{Binding ClearJavaCommand}" Margin="0,0,8,0"/>
+                      </WrapPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                        <Button Classes="ghost" Content="Отмена" Command="{Binding CancelEditCommand}"/>
+                        <Button Classes="primary" Content="Сохранить" Command="{Binding SaveCommand}"/>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

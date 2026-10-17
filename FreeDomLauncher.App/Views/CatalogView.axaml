@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.CatalogView">
+  <ScrollViewer>
+    <StackPanel Margin="28,14,28,28" Spacing="12">
+      <ItemsControl ItemsSource="{Binding Categories}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button Classes="chip" Classes.active="{Binding IsActive}" Content="{Binding Title}" Command="{Binding SelectCommand}" Margin="0,0,8,8"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <TextBox Text="{Binding SearchText}" Watermark="Поиск проектов по названию и описанию…  (работает исправление раскладки и опечаток)" FontSize="15" Padding="12,10"/>
+
+      <Border Classes="card" Padding="12">
+        <WrapPanel>
+          <StackPanel Margin="0,0,14,0" Spacing="3"><TextBlock Classes="muted" FontSize="11" Text="Версия Minecraft"/>
+            <ComboBox ItemsSource="{Binding McOptions}" SelectedItem="{Binding SelectedMc}" Width="150"/></StackPanel>
+          <StackPanel Margin="0,0,14,0" Spacing="3" IsVisible="{Binding ShowLoaderFilter}"><TextBlock Classes="muted" FontSize="11" Text="Загрузчик"/>
+            <ComboBox ItemsSource="{Binding LoaderOptions}" SelectedItem="{Binding SelectedLoader}" Width="140"/></StackPanel>
+          <StackPanel Margin="0,0,14,0" Spacing="3"><TextBlock Classes="muted" FontSize="11" Text="Сортировка"/>
+            <ComboBox ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SelectedSort}" Width="200">
+              <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Title}"/></DataTemplate></ComboBox.ItemTemplate>
+            </ComboBox></StackPanel>
+          <CheckBox Content="Как в активной сборке" IsChecked="{Binding UseActiveProfile}" VerticalAlignment="Bottom" Margin="0,0,14,4"/>
+          <Button Classes="ghost" Content="✕ Сбросить категорию" Command="{Binding ClearCategoryCommand}" IsVisible="{Binding HasCategory}" VerticalAlignment="Bottom"/>
+        </WrapPanel>
+      </Border>
+
+      <TextBlock Text="{Binding KindNote}" Classes="warn" IsVisible="{Binding KindNote, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+      <TextBlock Text="{Binding CategoryText}" Classes="muted" IsVisible="{Binding HasCategory}"/>
+
+      <!-- Умная подсказка -->
+      <Border Classes="card" BorderBrush="{DynamicResource FdAccent}" IsVisible="{Binding HasSuggestion}">
+        <StackPanel Spacing="10">
+          <TextBlock Text="{Binding SuggestionText}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"/>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Classes="ghost" Content="Искать исходный запрос" Command="{Binding SearchOriginalCommand}"/>
+            <Button Classes="primary" Content="Искать исправленный запрос" Command="{Binding SearchSuggestedCommand}"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Text="{Binding TotalText}" Classes="muted"/>
+
+      <Border Classes="card" BorderBrush="#F87171" IsVisible="{Binding ErrorText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+        <StackPanel Spacing="8">
+          <TextBlock Text="{Binding ErrorText}" Classes="error"/>
+          <Button Classes="ghost" Content="Повторить" Command="{Binding RetryCommand}" HorizontalAlignment="Left"/>
+        </StackPanel>
+      </Border>
+
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Height="4"/>
+
+      <Border Classes="card" IsVisible="{Binding IsEmpty}" Padding="30">
+        <StackPanel Spacing="6" HorizontalAlignment="Center">
+          <TextBlock Text="Ничего не найдено" Classes="h2" HorizontalAlignment="Center"/>
+          <TextBlock Text="Измените запрос или сбросьте фильтры." Classes="muted" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Border>
+
+      <ItemsControl ItemsSource="{Binding Results}">
+        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Spacing="10"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button Classes="cardbtn" Command="{Binding OpenCommand}">
+              <Border Classes="card" Padding="12">
+                <Grid ColumnDefinitions="64,*,Auto" ColumnSpacing="14">
+                  <Border Width="64" Height="64" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource FdSurface2}">
+                    <Image Source="{Binding Icon}" Stretch="UniformToFill"/>
+                  </Border>
+                  <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold"/>
+                      <TextBlock Text="{Binding Author}" Classes="muted" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxHeight="44" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding CategoriesText}" Classes="muted" FontSize="12"/>
+                  </StackPanel>
+                  <TextBlock Grid.Column="2" Text="{Binding DownloadsText}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </Grid>
+              </Border>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Button Classes="ghost" Content="Загрузить ещё" Command="{Binding LoadMoreCommand}" IsVisible="{Binding HasMore}" HorizontalAlignment="Center"/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

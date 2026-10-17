@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>FreeDomLauncher</AssemblyName>
+    <RootNamespace>FreeDomLauncher.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeDomLauncher.Core\FreeDomLauncher.Core.csproj" />
+    <ProjectReference Include="..\FreeDomLauncher.Infrastructure\FreeDomLauncher.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>FreeDomLauncher.Infrastructure</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CmlLib.Core" Version="4.*" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeDomLauncher.Core\FreeDomLauncher.Core.csproj" />
+  </ItemGroup>
+</Project>

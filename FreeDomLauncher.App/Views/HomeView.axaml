@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="FreeDomLauncher.App.Views.HomeView" Classes="page">
+  <ScrollViewer>
+    <StackPanel Margin="28" Spacing="18">
+      <Border CornerRadius="20" ClipToBounds="True" Height="300">
+        <Grid>
+          <Image Source="{Binding ProfileArt}" Stretch="UniformToFill"/>
+          <Border>
+            <Border.Background>
+              <LinearGradientBrush StartPoint="0%,100%" EndPoint="100%,0%">
+                <GradientStop Color="#EE0E0A18" Offset="0"/>
+                <GradientStop Color="#880E0A18" Offset="0.55"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+              </LinearGradientBrush>
+            </Border.Background>
+          </Border>
+          <StackPanel VerticalAlignment="Bottom" Margin="28" Spacing="8">
+            <TextBlock Text="{Binding ProfileName}" FontSize="34" FontWeight="Bold" Foreground="White"/>
+            <TextBlock Text="{Binding ProfileInfo}" FontSize="15" Foreground="#E5DEF5"/>
+            <TextBlock Text="{Binding JavaText}" FontSize="12" Foreground="#B9AFD6"/>
+            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,8,0,0">
+              <Button Classes="primary" FontSize="18" Padding="36,13" Content="{Binding PlayText}" Command="{Binding PlayCommand}" IsEnabled="{Binding !IsLaunching}"/>
+              <Button Classes="ghost" Content="Отмена" Command="{Binding CancelLaunchCommand}" IsVisible="{Binding IsLaunching}" VerticalAlignment="Center"/>
+              <Button Classes="danger" Content="Закрыть игру" Command="{Binding StopGameCommand}" IsVisible="{Binding IsGameRunning}" VerticalAlignment="Center"/>
+            </StackPanel>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Border Classes="card" IsVisible="{Binding HasProgress}">
+        <StackPanel Spacing="8">
+          <TextBlock Text="{Binding ProgressText}" TextWrapping="Wrap"/>
+          <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressValue}" IsIndeterminate="{Binding IsIndeterminate}" Height="8"/>
+        </StackPanel>
+      </Border>
+
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="18">
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Classes="h2" Text="Аккаунт"/>
+            <TextBlock Text="{Binding AccountText}" TextWrapping="Wrap"/>
+            <Button Classes="ghost" Content="Управление аккаунтами" Command="{Binding GoAccountsCommand}" HorizontalAlignment="Left"/>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Classes="h2" Text="Быстрые действия"/>
+            <WrapPanel>
+              <Button Classes="ghost" Content="📁 Папка сборки" Command="{Binding OpenFolderCommand}" Margin="0,0,8,8"/>
+              <Button Classes="ghost" Content="🧩 Моды сборки" Command="{Binding GoModsCommand}" Margin="0,0,8,8"/>
+              <Button Classes="ghost" Content="🗂 Сменить сборку" Command="{Binding GoProfilesCommand}" Margin="0,0,8,8"/>
+              <Button Classes="ghost" Content="📄 Открыть лог" Command="{Binding OpenLogCommand}" IsVisible="{Binding HasLog}" Margin="0,0,8,8"/>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

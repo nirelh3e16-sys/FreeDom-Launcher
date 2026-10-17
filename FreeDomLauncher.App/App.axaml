@@ -1,0 +1,28 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FreeDomLauncher.App.ViewModels"
+             xmlns:v="using:FreeDomLauncher.App.Views"
+             x:Class="FreeDomLauncher.App.App"
+             RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <Color x:Key="FdAccentColor">#8B5CF6</Color>
+    <SolidColorBrush x:Key="FdAccent" Color="#8B5CF6"/>
+    <LinearGradientBrush x:Key="FdGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#8B5CF6" Offset="0"/>
+      <GradientStop Color="#F97316" Offset="1"/>
+    </LinearGradientBrush>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://FreeDomLauncher/Styles/Theme.axaml"/>
+  </Application.Styles>
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="vm:HomeViewModel"><v:HomeView/></DataTemplate>
+    <DataTemplate DataType="vm:ProfilesViewModel"><v:ProfilesView/></DataTemplate>
+    <DataTemplate DataType="vm:ModsHostViewModel"><v:ModsHostView/></DataTemplate>
+    <DataTemplate DataType="vm:AccountsViewModel"><v:AccountsView/></DataTemplate>
+    <DataTemplate DataType="vm:SettingsViewModel"><v:SettingsView/></DataTemplate>
+  </Application.DataTemplates>
+</Application>
