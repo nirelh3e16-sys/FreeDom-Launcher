@@ -115,7 +115,7 @@ public sealed class MinecraftLauncherService : IMinecraftLauncherService
 
             progress.Report(new LaunchProgress("Установка файлов игры…", null));
             _log.Info($"Установка и запуск: сборка «{profile.Name}», версия {versionName}");
-            Process process = await launcher.InstallAndBuildProcessAsync(versionName, option).WaitAsync(ct);
+            Process process = await launcher.InstallAndBuildProcessAsync(versionName, option).AsTask().WaitAsync(ct);
 
             // Лог игры
             Directory.CreateDirectory(_paths.GameLogsDir);
